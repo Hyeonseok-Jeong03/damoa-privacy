@@ -18,36 +18,59 @@
   .date { color: #666; font-size: 0.9em; margin-bottom: 2em; }
   ul { padding-left: 1.3em; }
   li { margin: 0.5em 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.95em; }
+  th, td { border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f6f6f6; }
   footer { margin-top: 3em; color: #888; font-size: 0.85em; }
 </style>
 </head>
 <body>
 
+<!-- 초안(draft/ads-iap-drive): 광고·인앱 결제·Google Drive 백업이 들어간 버전을
+     배포하기 "전에" 게시할 것. 시행일은 게시하는 날짜로 바꿀 것. -->
 <h1>다모아(damoa) 개인정보처리방침</h1>
-<p class="date">시행일: 2026-09-25 (최초 시행일: 2026-07-24)</p>
+<p class="date">시행일: 2026-10-00 (최초 시행일: 2026-07-24)</p>
 
 <p>다모아(이하 "앱")는 사용자의 개인정보를 존중하며, 아래와 같이 개인정보 처리 방침을 안내합니다.</p>
 
-<h2>1. 수집하는 개인정보</h2>
-<p><strong>현재 버전의 앱은 어떠한 개인 식별 정보도 수집하지 않습니다.</strong> 사용자가 앱에 입력하는
-저축 목표, 목표 금액, 저축 기록 등 모든 데이터는 사용자의 <strong>기기 내부 저장소(로컬 데이터베이스)에만 저장</strong>되며,
-앱이 이를 개발자의 서버나 제3자에게 전송하는 일은 없습니다.</p>
-<p>다만 Android 운영체제의 백업 기능을 통해 사용자 본인의 Google 계정에 앱 데이터가 백업될 수
-있습니다 &mdash; 아래 <a href="#backup">3. Google 자동 백업</a>을 확인해 주세요.</p>
+<h2>1. 수집하는 개인정보 (요약)</h2>
+<p>사용자가 앱에 입력하는 저축 목표, 목표 금액, 저축 기록 등은 사용자의 <strong>기기 내부
+저장소(로컬 데이터베이스)에 저장</strong>되며, <strong>개발자는 이 데이터를 받거나 볼 수 없습니다.</strong>
+개발자는 별도의 서버를 운영하지 않습니다.</p>
+<p>다만 아래의 경우에는 데이터가 기기 밖으로 나갑니다.</p>
+<table>
+  <tr><th>경우</th><th>무엇이</th><th>어디로</th><th>자세히</th></tr>
+  <tr><td>광고 표시</td><td>광고 ID, 기기·앱 정보, IP 주소 등</td><td>Google(AdMob)</td><td><a href="#ads">3절</a></td></tr>
+  <tr><td>"광고 제거" 구매</td><td>결제 정보</td><td>Google Play</td><td><a href="#purchase">4절</a></td></tr>
+  <tr><td>Google Drive 백업 (사용자가 버튼을 누를 때만)</td><td>저축 목표·기록</td><td>사용자 본인의 Google Drive</td><td><a href="#drive">5절</a></td></tr>
+  <tr><td>Android 자동 백업</td><td>앱 데이터·설정</td><td>사용자 본인의 Google 계정 백업</td><td><a href="#backup">6절</a></td></tr>
+</table>
 
 <h2>2. 기기 권한</h2>
-<p>앱은 다음 권한을 사용합니다. <strong>아래 권한은 모두 기기 안에서만 쓰이며,</strong> 이 권한들을
-사용하는 과정에서 어떠한 데이터도 외부로 전송되지 않습니다.</p>
+<p>앱(과 앱에 포함된 라이브러리)은 다음 권한을 사용합니다.</p>
 <ul>
+  <li><strong>인터넷(INTERNET)</strong>: 광고를 불러오고, 사용자가 요청할 때 Google Drive에 백업하거나
+      백업을 내려받기 위해 사용합니다. 저축 목표·기록은 Drive 백업을 누를 때만 사용자 본인의 Drive로
+      전송되며, 개발자에게 전송되지 않습니다.</li>
+  <li><strong>광고 ID(com.google.android.gms.permission.AD_ID)</strong>: 광고 SDK가 광고 게재·측정에
+      광고 ID를 사용하기 위한 권한입니다(<a href="#ads">3절</a>).</li>
+  <li><strong>광고 관련 개인정보 보호 API(ACCESS_ADSERVICES_AD_ID, ACCESS_ADSERVICES_ATTRIBUTION,
+      ACCESS_ADSERVICES_TOPICS)</strong>: 광고 SDK가 Android의 광고용 개인정보 보호 기능(Privacy
+      Sandbox)을 사용하기 위해 선언하는 권한입니다.</li>
+  <li><strong>결제(com.android.vending.BILLING)</strong>: "광고 제거" 구매와 구매 내역 확인을 위해
+      Google Play 결제 시스템을 사용합니다(<a href="#purchase">4절</a>).</li>
+  <li><strong>생체 인증(USE_BIOMETRIC, USE_FINGERPRINT)</strong>: Google 계정 로그인에 쓰는
+      Android 로그인 라이브러리(Credential Manager)가 선언하는 권한입니다. 앱은 지문 등 생체 정보를
+      읽거나 저장하지 않습니다.</li>
   <li><strong>알림(POST_NOTIFICATIONS)</strong>: 저축 계획 리마인더 알림을 표시하기 위해 사용합니다.</li>
+  <li><strong>진동(VIBRATE)</strong>: 리마인더 알림이 도착할 때 진동을 울리기 위해 알림 라이브러리가
+      사용합니다.</li>
   <li><strong>정확한 알람 예약(SCHEDULE_EXACT_ALARM)</strong>: 사용자가 설정한 시각에 리마인더 알림이
       정확히 도착하도록 예약하기 위해 사용합니다.</li>
   <li><strong>부팅 완료 수신(RECEIVE_BOOT_COMPLETED)</strong>: 기기를 재부팅한 뒤에도 예약해둔 리마인더
       알림이 유지되도록 복구하기 위해 사용합니다.</li>
-  <li><strong>네트워크 상태 조회(ACCESS_NETWORK_STATE)</strong>: 리마인더 예약을 하루에 한 번 다시
-      맞추는 백그라운드 작업에 Android의 작업 예약 라이브러리(WorkManager)를 사용하며, 이
-      라이브러리가 포함하는 권한입니다. 이 권한으로는 연결 여부만 확인할 수 있고 통신은 할 수
-      없으며, 다모아는 이 작업에 네트워크 연결을 요구하지도 않습니다.</li>
+  <li><strong>네트워크 상태 조회(ACCESS_NETWORK_STATE)</strong>: 광고 SDK와, 리마인더 예약을 하루에 한 번
+      다시 맞추는 백그라운드 작업 라이브러리(WorkManager)가 연결 여부를 확인하기 위해 사용합니다.</li>
   <li><strong>절전 모드 해제(WAKE_LOCK)</strong>: 위 백그라운드 작업이 실행되는 짧은 동안 기기가
       다시 절전 상태로 돌아가지 않도록 하기 위해 같은 라이브러리가 사용합니다.</li>
   <li><strong>포그라운드 서비스(FOREGROUND_SERVICE, FOREGROUND_SERVICE_SHORT_SERVICE)</strong>:
@@ -55,13 +78,56 @@
       라이브러리가 선언하는 권한입니다. 앱이 계속 켜져 있는 서비스를 띄우지는 않습니다.</li>
 </ul>
 
-<h2 id="backup">3. Google 자동 백업</h2>
-<p>앱은 Android의 <strong>자동 백업(Auto Backup)</strong> 기능을 켜둔 상태입니다. 이 앱에는 클라우드
-동기화 기능이 없어 기기 내부 저장소가 유일한 저장소이므로, 백업을 꺼두면 기기를 교체하거나 앱을
-재설치할 때 그동안 모은 기록을 되살릴 방법이 전혀 없기 때문입니다.</p>
+<h2 id="ads">3. 광고 (Google AdMob)</h2>
+<p>앱은 무료로 제공되며, 목록 화면과 통계 화면에 <strong>Google AdMob</strong> 광고를 표시합니다.
+광고를 불러오고 표시하는 과정에서 광고 SDK가 다음 정보를 수집해 <strong>Google LLC</strong>에
+제공합니다. 이 정보는 개발자에게 전달되지 않으며, 개발자는 AdMob이 제공하는 집계 보고서(노출 수,
+수익 등)만 볼 수 있습니다.</p>
+<ul>
+  <li><strong>수집 항목</strong>: 광고 ID, IP 주소(대략적인 위치 추정에 쓰일 수 있음), 기기 모델·운영체제
+      버전 등 기기 정보, 앱 정보, 광고 노출·클릭 등 광고와의 상호작용, 오류 진단 정보</li>
+  <li><strong>이용 목적</strong>: 광고 게재 및 성과 측정, 맞춤형 광고, 부정 클릭 방지·보안, 분석</li>
+  <li><strong>저장소의 저축 데이터</strong>: 광고 SDK는 사용자가 입력한 저축 목표·기록을 받지 않습니다.</li>
+</ul>
+<p>Google이 이 정보를 어떻게 사용하는지는
+<a href="https://policies.google.com/technologies/partner-sites">Google 파트너 사이트·앱에서의 데이터 사용 방식</a>에서
+확인할 수 있습니다. 맞춤형 광고를 원하지 않으시면 기기의 <strong>설정 &rarr; Google &rarr; 광고</strong>에서
+광고 ID를 삭제하거나 재설정할 수 있고, <a href="https://myadcenter.google.com/">내 광고 센터</a>에서 맞춤
+광고를 끌 수 있습니다.</p>
+
+<h2 id="purchase">4. 인앱 결제 ("광고 제거")</h2>
+<p>앱의 "광고 제거" 상품은 <strong>Google Play 결제 시스템</strong>으로 판매됩니다. 결제 수단(카드 번호 등)과
+결제 처리는 Google Play가 담당하며, <strong>앱과 개발자는 결제 수단 정보를 받거나 처리하지 않습니다.</strong></p>
+<p>앱은 광고를 숨길지 판단하기 위해 앱을 실행할 때마다 Google Play에 이 기기의 Google 계정이 "광고 제거"를
+구매했는지 조회합니다. 앱은 구매 여부를 기기에 따로 저장하거나 개발자에게 전송하지 않습니다. 개발자는 Google
+Play Console에서 판매 내역(주문 번호, 금액, 국가 등)을 볼 수 있으며, 이는 Google Play의 판매자 정책에
+따릅니다.</p>
+
+<h2 id="drive">5. Google Drive 백업</h2>
+<p>설정의 <strong>"Google Drive에 백업"</strong>을 누르면, 저축 목표와 저축 기록 전체를 파일 하나로 만들어
+<strong>사용자 본인의 Google Drive</strong>에 저장합니다. <strong>"Google Drive에서 복원"</strong>을 누르면 그 파일을
+내려받아 지금 앱 데이터를 그 내용으로 바꿉니다.</p>
+<ul>
+  <li><strong>언제</strong>: 사용자가 버튼을 누를 때만 동작합니다. 앱이 자동으로 백업하지 않습니다.</li>
+  <li><strong>저장 위치</strong>: 사용자 Drive의 <strong>앱 전용 숨김 폴더</strong>(Drive 화면에는 보이지 않음). 앱은
+      이 폴더만 접근할 수 있는 권한(<code>drive.appdata</code>)만 요청하므로, 사용자의 다른 Drive 파일은 보거나
+      수정할 수 없습니다.</li>
+  <li><strong>개발자의 접근</strong>: 파일은 사용자 본인의 Google 계정에만 저장되며, <strong>개발자는 이 파일에
+      접근할 수 없습니다.</strong></li>
+  <li><strong>Google 계정 연결</strong>: 처음 백업·복원할 때 Google 계정 선택과 권한 동의 화면이 나타납니다.
+      앱은 Drive 접근에 필요한 인증 정보만 사용하며, 계정 정보(이메일 등)를 따로 저장하거나 전송하지 않습니다.</li>
+  <li><strong>처리 주체</strong>: Google LLC (Google Drive 서비스 약관 및 개인정보처리방침에 따름)</li>
+</ul>
+<p>앱의 Drive 접근 권한은 <a href="https://myaccount.google.com/connections">Google 계정 &rarr; 타사 앱 및 서비스</a>에서
+언제든 해제할 수 있습니다.</p>
+
+<h2 id="backup">6. Google 자동 백업</h2>
+<p>앱은 Android의 <strong>자동 백업(Auto Backup)</strong> 기능을 켜둔 상태입니다. 기기를 교체하거나 앱을
+재설치할 때 그동안 모은 기록을 되살릴 수 있도록 하기 위함입니다. 위 5절의 Google Drive 백업과는 별개로,
+Android 운영체제가 자동으로 처리합니다.</p>
 <ul>
   <li><strong>백업 대상</strong>: 저축 목표&middot;저축 기록이 담긴 앱 데이터베이스와 앱 설정(알림 on/off,
-      알림 시각 등)</li>
+      알림 시각, 마지막 Drive 백업 시각 등)</li>
   <li><strong>백업 제외</strong>: 앱 진단용 오류 로그</li>
   <li><strong>저장 위치</strong>: 사용자 <strong>본인의 Google 계정 백업 저장소</strong>. Android 운영체제가
       처리하며, <strong>개발자는 이 백업에 접근할 수 없습니다.</strong></li>
@@ -70,11 +136,7 @@
 <p>백업을 원하지 않으시면 기기의 <strong>설정 &rarr; Google &rarr; 백업</strong>에서 앱 데이터 백업을 끌 수
 있습니다.</p>
 
-<h2>4. 제3자 제공 및 광고/분석 SDK</h2>
-<p><strong>현재 버전의 앱은</strong> 광고 SDK, 분석(애널리틱스) SDK를 포함하지 않으며, 어떠한
-제3자에게도 사용자 데이터를 제공하지 않습니다. 광고나 유료 기능이 추가되면 이 절과 위
-<strong>1. 수집하는 개인정보</strong>를 함께 갱신합니다 &mdash; 아래
-<a href="#changes">8. 변경 사항</a>을 확인해 주세요.</p>
+<h2>7. 그 밖의 기능</h2>
 <p>앱의 "버그 신고" 기능은 사용자의 메일 앱을 열어주기만 합니다. 보낼 내용을 확인하고 실제로
 전송하는 것은 전적으로 사용자 본인이며, 앱이 무언가를 자동으로 보내지 않습니다.</p>
 <p>앱의 "데이터 내보내기" 기능은 저축 목표와 저축 기록을 파일 하나로 만들어, 사용자가 고른
@@ -82,39 +144,36 @@
 앱이 이 파일을 자동으로 전송하거나 개발자에게 보내지 않습니다. "데이터 가져오기" 기능은
 사용자가 고른 파일을 기기 안에서 읽기만 합니다.</p>
 
-<h2>5. 데이터 삭제</h2>
+<h2>8. 데이터 삭제</h2>
 <p>앱을 삭제(제거)하면 기기에 저장된 모든 데이터(저축 목표, 저축 기록 등)가 함께 삭제됩니다.
 앱 내에서도 목표/기록 삭제 기능을 통해 언제든지 데이터를 직접 삭제할 수 있습니다.</p>
-<p><strong>다만 위 <a href="#backup">3. Google 자동 백업</a>이 켜져 있는 경우, 앱을 삭제한 뒤에도 Google
-계정에 백업본이 일정 기간 남아 있을 수 있습니다.</strong> 이 백업본은 기기의
-<strong>설정 &rarr; Google &rarr; 백업 &rarr; 기기 백업 관리</strong>(또는 Google One 앱)에서 직접 삭제할 수
-있습니다.</p>
-<p>"데이터 내보내기"로 만든 파일은 사용자가 보관한 곳에 남으므로 앱을 삭제해도 함께 지워지지
-않습니다. 필요 없어지면 보관한 곳에서 직접 삭제해 주세요. 내보낸 파일은 암호화되어 있지 않으니
-다른 사람이 볼 수 있는 곳에 두지 않도록 유의해 주세요.</p>
+<p><strong>다만 아래 백업본은 앱을 삭제해도 남아 있을 수 있습니다.</strong></p>
+<ul>
+  <li><strong>Google Drive 백업(5절)</strong>: Google Drive 웹사이트의 <strong>설정 &rarr; 앱 관리 &rarr; 다모아
+      &rarr; 옵션 &rarr; 숨겨진 앱 데이터 삭제</strong>에서 삭제할 수 있습니다.</li>
+  <li><strong>Google 자동 백업(6절)</strong>: 기기의 <strong>설정 &rarr; Google &rarr; 백업 &rarr; 기기 백업
+      관리</strong>(또는 Google One 앱)에서 삭제할 수 있습니다.</li>
+  <li><strong>"데이터 내보내기"로 만든 파일</strong>: 사용자가 보관한 곳에 남으므로, 필요 없어지면 보관한 곳에서
+      직접 삭제해 주세요. 내보낸 파일은 암호화되어 있지 않으니 다른 사람이 볼 수 있는 곳에 두지 않도록 유의해
+      주세요.</li>
+</ul>
+<p>광고 SDK가 수집한 정보(3절)는 Google의 정책에 따라 처리·보관되며, 위 3절의 방법으로 광고 ID를 삭제하거나
+재설정할 수 있습니다.</p>
 
-<h2>6. 아동의 개인정보</h2>
-<p>앱은 별도로 아동으로부터 개인정보를 수집하지 않습니다.</p>
+<h2>9. 아동의 개인정보</h2>
+<p>앱은 아동을 주요 대상으로 하지 않으며, 아동으로부터 의도적으로 개인정보를 수집하지 않습니다.</p>
 
-<h2>7. 문의</h2>
+<h2>10. 문의</h2>
 <p>본 개인정보처리방침에 대해 문의사항이 있으시면 아래 이메일로 연락해 주세요.</p>
 <p>이메일: gtroqkf@gmail.com</p>
 
-<h2 id="changes">8. 변경 사항</h2>
+<h2 id="changes">11. 변경 사항</h2>
 <p>앱에 새로운 기능이 추가되어 개인정보 처리 방식이 변경될 경우, <strong>그 기능이 포함된 버전을
 배포하기 전에</strong> 본 방침을 먼저 갱신하고 시행일을 업데이트합니다.</p>
-<p>도입을 계획하고 있어 이 방침이 바뀔 예정인 기능은 아래와 같습니다.
-<strong>아직 앱에 들어가 있지 않으며</strong>, 실제로 포함되는 시점에 위 1절과 4절을 함께
-갱신합니다.</p>
-<ul>
-  <li><strong>광고</strong>: 광고 SDK는 광고 식별자(광고 ID)와 기기 정보 등을 수집하고 제3자에게
-      제공할 수 있습니다. 위 <strong>1. 수집하는 개인정보</strong>와
-      <strong>4. 제3자 제공 및 광고/분석 SDK</strong>가 크게 바뀝니다.</li>
-  <li><strong>유료 기능(인앱 결제)</strong>: 결제는 Google Play 결제 시스템이 처리하므로 앱이
-      카드 번호 등 결제 수단 정보를 다루지 않습니다.</li>
-  <li><strong>클라우드 동기화</strong>: 기기 밖(서버)에도 데이터가 저장되므로 방침 전반이
-      바뀝니다.</li>
-</ul>
+<p>이번 개정(시행일 2026-10-00)에서는 광고(3절), 인앱 결제(4절), Google Drive 백업(5절)을 새로 안내하고,
+그에 따라 1절·2절·8절을 갱신했습니다.</p>
+<p>도입을 검토 중이며 이 방침이 다시 바뀔 수 있는 기능은 <strong>여러 기기 간 동기화</strong>입니다. 기기 밖의
+서버(Google Firebase 등)에 데이터가 저장되므로, 실제로 포함되기 전에 이 방침을 먼저 갱신합니다.</p>
 
 <footer>다모아(damoa) 앱 개인정보처리방침</footer>
 
